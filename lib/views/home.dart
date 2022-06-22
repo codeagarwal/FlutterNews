@@ -4,6 +4,7 @@ import 'package:flutter_news/helper/data.dart';
 import 'package:flutter_news/helper/news.dart';
 import 'package:flutter_news/models/article_model.dart';
 import 'package:flutter_news/models/category_model.dart';
+import 'package:flutter_news/views/article_view.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -93,6 +94,7 @@ class _HomeState extends State<Home> {
                               imageURL: articles[index].urlToImage,
                               title: articles[index].title,
                               desc: articles[index].description,
+                              url: articles[index].url,
                             );
                           }),
                     )
@@ -148,34 +150,48 @@ class CategoryTile extends StatelessWidget {
 }
 
 class BlogTile extends StatelessWidget {
-  final String imageURL, title, desc;
-  BlogTile({required this.imageURL, required this.title, required this.desc});
+  final String imageURL, title, desc, url;
+  BlogTile(
+      {required this.imageURL,
+      required this.title,
+      required this.desc,
+      required this.url});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      child: Column(
-        children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.network(imageURL)),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.black87,
-              fontWeight: FontWeight.w500,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ArticleView(
+                      blogUrl: url,
+                    )));
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16),
+        child: Column(
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image.network(imageURL)),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Text(
-            desc,
-            style: TextStyle(color: Colors.black54),
-          ),
-        ],
+            SizedBox(
+              height: 8,
+            ),
+            Text(
+              desc,
+              style: TextStyle(color: Colors.black54),
+            ),
+          ],
+        ),
       ),
     );
   }
